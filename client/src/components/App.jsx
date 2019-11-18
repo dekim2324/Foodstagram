@@ -15,33 +15,35 @@ class App extends Component {
       food: '',
       image: null,
       url: [],
+      showURL: [],
       date: JSON.stringify(new Date()).slice(0, 11),
       showDate: new Date()
     }
 
   }
 
-  // componentDidMount() {
-  //   db.collection('foods')
-  //     .get()
-  //     .then((snapshot) =>
-  //         console.log(snapshot.docs.forEach(food =>
-  //             console.log(food.data())
-  //             )))
-  // };
+  componentDidMount() {
+
+    db.collection('foods')
+    .where("date", "==", this.state.date)
+    .get()
+    .then((snapshot) =>
+        snapshot.docs.forEach(food =>
+            // console.log('got em', food.data().name)
+            this.setState({showURL: [...this.state.showURL, food.data().name]})
+            ))
+
+  };
 
   handleDateChange(e)  {
-    console.log(e)
-    // console.log(e.slice(0, 10))
     let value = JSON.stringify(e);
     value = value.slice(0, 11) + ""
-    console.log(value)
-
 
     this.setState({
       date: value,
       showDate: e,
-      url: []
+      url: [],
+      showURL: []
     }, () => {
       db.collection('foods')
       .where("date", "==", this.state.date)
@@ -49,7 +51,7 @@ class App extends Component {
       .then((snapshot) =>
           snapshot.docs.forEach(food =>
               // console.log('got em', food.data().name)
-              this.setState({url: [...this.state.url, food.data().name]})
+              this.setState({showURL: [...this.state.showURL, food.data().name]})
               ))
 
 
@@ -89,7 +91,7 @@ class App extends Component {
 
       .then(url => {
         console.log(url);
-        this.setState({ url: [url]});
+        this.setState({ url: [url], showURL: [...this.state.showURL, url]});
 
         db.collection('foods').add({
           date: this.state.date,
@@ -138,10 +140,10 @@ class App extends Component {
 
          <Buttons handleImage={this.handleImage.bind(this)} handleUpload={this.handleUpload.bind(this)}/>
 
-         {/* <img src={this.state.url}/> */}
+         
 
-        {this.state.url.map(url => 
-          <img src={url} key={uuidv1()}/>
+        {this.state.showURL.map(url => 
+          <img src={url} key={uuidv1()} width='200px' height='auto'/>
           )}
 
       </div>
