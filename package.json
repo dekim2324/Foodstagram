@@ -1,0 +1,42 @@
+{
+  "name": "hrr41-mvp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon ./server/server.js",
+    "build": "webpack -d --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dekim2324/hrr41-mvp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dekim2324/hrr41-mvp/issues"
+  },
+  "homepage": "https://github.com/dekim2324/hrr41-mvp#readme",
+  "dependencies": {
+    "@babel/core": "^7.7.2",
+    "@babel/preset-env": "^7.7.1",
+    "@babel/preset-react": "^7.7.0",
+    "@date-io/date-fns": "^1.3.11",
+    "@material-ui/core": "^4.6.1",
+    "@material-ui/pickers": "^3.2.8",
+    "babel-loader": "^8.0.6",
+    "body-parser": "^1.19.0",
+    "date-fns": "^2.0.0-beta.5",
+    "express": "^4.17.1",
+    "moment": "^2.24.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  },
+  "devDependencies": {
+    "babel-plugin-import": "^1.12.2",
+    "nodemon": "^1.19.4",
+    "style-loader": "^1.0.0"
+  }
+}
