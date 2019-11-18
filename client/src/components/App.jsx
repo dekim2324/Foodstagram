@@ -4,6 +4,8 @@ import MyCalendar from './MyCalendar.jsx';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Buttons from './Buttons.jsx';
+const uuidv1 = require('uuid/v1');
+import moment from 'moment'
 
 class App extends Component {
   constructor() {
@@ -12,9 +14,9 @@ class App extends Component {
     this.state = {
       food: '',
       image: null,
-      url: '',
-      date: '',
-      showDate: ''
+      url: [],
+      date: JSON.stringify(new Date()).slice(0, 11),
+      showDate: new Date()
     }
 
   }
@@ -29,22 +31,30 @@ class App extends Component {
   // };
 
   handleDateChange(e)  {
-    // console.log(e)
+    console.log(e)
+    // console.log(e.slice(0, 10))
     let value = JSON.stringify(e);
-    // console.log(value)
+    value = value.slice(0, 11) + ""
+    console.log(value)
+
+
     this.setState({
       date: value,
-      showDate: e
+      showDate: e,
+      url: []
     }, () => {
-      console.log('after!')
       db.collection('foods')
       .where("date", "==", this.state.date)
       .get()
       .then((snapshot) =>
           snapshot.docs.forEach(food =>
               // console.log('got em', food.data().name)
-              this.setState({url: food.data().name})
+              this.setState({url: [...this.state.url, food.data().name]})
               ))
+
+
+
+          // console.log([snapshot.docs.data()])
     })
 
 
@@ -79,7 +89,7 @@ class App extends Component {
 
       .then(url => {
         console.log(url);
-        this.setState({ url: url});
+        this.setState({ url: [url]});
 
         db.collection('foods').add({
           date: this.state.date,
@@ -128,7 +138,11 @@ class App extends Component {
 
          <Buttons handleImage={this.handleImage.bind(this)} handleUpload={this.handleUpload.bind(this)}/>
 
-         <img src={this.state.url}/>
+         {/* <img src={this.state.url}/> */}
+
+        {this.state.url.map(url => 
+          <img src={url} key={uuidv1()}/>
+          )}
 
       </div>
     )
