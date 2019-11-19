@@ -16,6 +16,7 @@ class App extends Component {
       image: null,
       url: [],
       showURL: [],
+      submitBlue: 'default',
       date: JSON.stringify(new Date()).slice(0, 11),
       showDate: new Date()
     }
@@ -43,7 +44,8 @@ class App extends Component {
       date: value,
       showDate: e,
       url: [],
-      showURL: []
+      showURL: [],
+      submitBlue: 'default'
     }, () => {
       db.collection('foods')
       .where("date", "==", this.state.date)
@@ -70,11 +72,12 @@ class App extends Component {
   handleImage(e) {
     if(e.target.files[0]) {
         const image = e.target.files[0];
-      this.setState(() => ({ image }));
+      this.setState(() => ({ image, submitBlue: 'primary' }));
     }
   };
 
   handleUpload(e) {
+    this.setState({submitBlue: 'default'})
     const { image } = this.state;
     const uploadTask = storage.ref(`image/${image.name}`).put(image);
 
@@ -127,7 +130,7 @@ class App extends Component {
 
       <div>
         <Navbar />
-        <MyCalendar handleDateChange={this.handleDateChange.bind(this)} showDate={this.state.showDate}/>
+        <MyCalendar handleDateChange={this.handleDateChange.bind(this)} showDate={this.state.showDate} />
 
         {/* <form>
         <input type="text" onChange={e => this.handleChange(e)}></input>
@@ -138,18 +141,25 @@ class App extends Component {
         {/* <input type="file" id="fileButton" onChange={e => this.handleImage(e)}></input>
         <button onClick={e => this.handleUpload(e)}>Upload</button> */}
 
-         <Buttons handleImage={this.handleImage.bind(this)} handleUpload={this.handleUpload.bind(this)}/>
+         <Buttons handleImage={this.handleImage.bind(this)} handleUpload={this.handleUpload.bind(this)} submitBlue={this.state.submitBlue}/>
 
          
+        <div style={pics}>
+          {this.state.showURL.map(url => 
+            <img src={url} key={uuidv1()} width='200px' height='auto'/>
+            )}
+        </div>
 
-        {this.state.showURL.map(url => 
-          <img src={url} key={uuidv1()} width='200px' height='auto'/>
-          )}
 
       </div>
     )
   }
 }
 
+const pics = {
+  marginTop: '35px',
+  display: 'flex',
+  justifyContent: 'space-evenly'
+}
 
 export default App;

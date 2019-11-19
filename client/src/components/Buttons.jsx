@@ -31,7 +31,7 @@ export default function Buttons(props) {
         </Button>
       </label>
 
-      <Button variant="contained" color="primary" className={classes.button} onClick={e => props.handleUpload(e)}>
+      <Button variant="contained" color={props.submitBlue} className={classes.button} onClick={e => props.handleUpload(e)}>
         Submit
       </Button>
     </div>
