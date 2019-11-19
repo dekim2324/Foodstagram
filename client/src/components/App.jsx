@@ -55,18 +55,7 @@ class App extends Component {
               // console.log('got em', food.data().name)
               this.setState({showURL: [...this.state.showURL, food.data().name]})
               ))
-
-
-
-          // console.log([snapshot.docs.data()])
     })
-
-
-
-    // var citiesRef = db.collection('foods');
-    // var query = citiesRef.where("date", "==", this.state.date);
-
-    // query.get().then(res => console.log(res.docs))
   };
 
   handleImage(e) {
@@ -102,12 +91,9 @@ class App extends Component {
         })
       })
     });
-
-
 };
 
   handleChange(e){
-    // console.log(e.target.value)
     this.setState({
       food: e.target.value
     })
@@ -122,6 +108,22 @@ class App extends Component {
     })
   };
 
+  handleDelete(e) {
+    let picLink = e.target.getAttribute('value');
+
+    this.setState({showURL: this.state.showURL.filter(url => {
+      return url[0] !== picLink
+    })}, () => {
+  db.collection('foods')
+  .where("name", "array-contains", picLink)
+  .get()
+  .then((snapshot) =>
+      snapshot.docs.forEach(doc =>
+          doc.ref.delete()
+          ))
+
+    })
+  }
 
   render() {
 
@@ -132,21 +134,20 @@ class App extends Component {
         <Navbar />
         <MyCalendar handleDateChange={this.handleDateChange.bind(this)} showDate={this.state.showDate} />
 
-        {/* <form>
-        <input type="text" onChange={e => this.handleChange(e)}></input>
-        <input type="submit" onClick={e => this.handleSubmit(e)} value="Submit"></input>
-        </form>
-         */}
-
-        {/* <input type="file" id="fileButton" onChange={e => this.handleImage(e)}></input>
-        <button onClick={e => this.handleUpload(e)}>Upload</button> */}
-
          <Buttons handleImage={this.handleImage.bind(this)} handleUpload={this.handleUpload.bind(this)} submitBlue={this.state.submitBlue}/>
-
+         
+         
          
         <div style={pics}>
           {this.state.showURL.map(url => 
-            <img src={url} key={uuidv1()} width='200px' height='auto'/>
+              
+            <div key={uuidv1()}>
+                <div style={icon}>
+                  <i className="fas fa-minus-circle fa-lg" onClick={e => this.handleDelete(e)} value={url}></i>
+                </div>
+                <img src={url} width='200px' height='auto' style={photo}/>
+            </div>
+
             )}
         </div>
 
@@ -159,7 +160,16 @@ class App extends Component {
 const pics = {
   marginTop: '35px',
   display: 'flex',
-  justifyContent: 'space-evenly'
+  justifyContent: 'space-evenly',
+  alignItems: 'center'
+}
+
+const photo = {
+  borderRadius: '20px'
+}
+
+const icon = {
+  marginRight: '20px'
 }
 
 export default App;
