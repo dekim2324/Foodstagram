@@ -28,7 +28,7 @@
     "body-parser": "^1.19.0",
     "date-fns": "^2.0.0-beta.5",
     "express": "^4.17.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "uuid": "^3.3.3",
